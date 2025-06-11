@@ -1,0 +1,42 @@
+services:
+  app:
+    container_name: venti-app
+    build: .
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/ventidb
+      JWT_SECRET: supersecretventikey
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db
+
+  db:
+    container_name: venti-db
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ventidb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pgweb:
+    container_name: venti-pgweb
+    image: sosedoff/pgweb
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/ventidb?sslmode=disable
+    depends_on:
+      - db
+
+volumes:
+  db_data:
