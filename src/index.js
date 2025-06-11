@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
-
+const adminRouter = require("./routes/admin");
 const app = express();
 
 app.use(cors());
@@ -13,6 +13,8 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/auth", authRouter);
+app.use("", adminRouter);
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

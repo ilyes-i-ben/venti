@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// TODO: see why storing it HttpOnly cookies is better than LocalStorage / SessionStorage (dig deep with XSS-attacks and all).
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
